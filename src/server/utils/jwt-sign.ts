@@ -1,5 +1,6 @@
 import { sign } from 'jsonwebtoken'
 import config from '../config'
+import { JWT_EXPIRATION } from '../constants'
 
 type paramShape = {
   username: string
@@ -11,6 +12,6 @@ export default (params: paramShape) => {
   const { username, role, id } = params
 
   return sign({ username, role, id }, config.JWT_SECRET, {
-    expiresIn: '20m',
+    expiresIn: JWT_EXPIRATION,
   })
 }

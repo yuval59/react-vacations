@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "dayjs": "^1.11.8",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",

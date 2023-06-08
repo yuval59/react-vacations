@@ -1,34 +1,22 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm'
-import { Vacation } from './vacation'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column('text', { nullable: false })
+  @Column('text')
   first_name: string
 
-  @Column('text', { nullable: false })
+  @Column('text')
   last_name: string
 
   @Column('varchar', { unique: true })
   username: string
 
-  @Column('varchar', { nullable: false })
+  @Column('varchar')
   password: string
 
   @Column('boolean', { default: false })
   is_admin: boolean
-
-  @ManyToMany(() => Vacation)
-  @JoinTable()
-  following: Vacation[]
 }

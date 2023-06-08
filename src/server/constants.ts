@@ -1,9 +1,21 @@
+export const JWT_EXPIRATION = '2h'
+
+export const FORMATS = {
+  MYSQL_DATE: ' YYYY-MM-DD ',
+}
+
+export const ROLES = {
+  USER: 'user',
+  ADMIN: 'admin',
+} as const
+
 export const ROUTES = {
   STATUS: '/status',
   REGISTER: '/register',
   LOGIN: '/login',
-  VACATION: '/vacation',
+  VACATIONS: '/vacations',
   VACATION_FOLLOW: '/follow',
+  VACATION_STATS: '/stats',
 } as const
 
 export const PASSWORD_PARAMS = {
@@ -21,11 +33,13 @@ export const PASSWORD_ERRORS = {
 
 export type PASSWORD_ERRORS_UNION = keyof typeof PASSWORD_ERRORS
 
-export const REGISTER_ERRORS = {
-  USERNAME_EXISTS: 'Username already exists',
-}
-
-export const LOGIN_ERRORS = {
+export const DATABASE_ERRORS = {
+  VACATION_NOT_FOUND: 'Vacation not found',
+  VACATION_NOT_FOUND_CODE: 'VACATION_NOT_FOUND',
+  DATE_ERROR: 'The dates are incorrect',
+  DATE_ERROR_CODE: 'DATE_ERROR',
   USER_NOT_FOUND: 'User not found',
+  USER_NOT_FOUND_CODE: 'USER_NOT_FOUND',
   INCORRECT_PASSWORD: 'Incorrect password',
+  USERNAME_EXISTS: 'Username already exists',
 }

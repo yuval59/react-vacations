@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express'
 import config from './config'
-import { ROUTES } from './constants'
-import { login, register, status, vacation } from './routers'
+import { admin, login, register, status, vacation } from './routers'
 
 const app = express()
 app.use(express.json())
@@ -9,7 +8,8 @@ app.use(express.json())
 app.use(register)
 app.use(status)
 app.use(login)
-app.use(ROUTES.VACATION, vacation)
+app.use(vacation)
+app.use(admin)
 
 app.use((req: Request, res: Response) => {
   try {
