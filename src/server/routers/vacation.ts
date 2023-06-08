@@ -1,8 +1,9 @@
 import { Request, Response, Router } from 'express'
 import { z } from 'zod'
 import { DATABASE_ERRORS, ROUTES } from '../constants'
-import { addFollower, removeFollower } from '../db/dal'
-import { adminOnly, jwtVerify } from '../middleware'
+import { addFollower, getAllVacations, removeFollower } from '../db/dal'
+import { jwtVerify } from '../middleware'
+import { objectOmit } from '../utils'
 
 const router = Router()
 
@@ -14,8 +15,19 @@ router.delete(ROUTES.VACATION_FOLLOW, [jwtVerify], deleteFollow)
 export default router
 
 async function getVacations(req: Request, res: Response) {
-  const { id, role } = res.locals
-  res.status(200).send(role)
+  try {
+    const { id } = res.locals
+    const allVacations = await getAllVacations()
+    res.status(200).json(
+      allVacations.map((vacation) => ({
+        ...objectOmit(vacation, ['followers', 'id']),
+        following: vacation.followers.some((user) => user.id == id),
+      }))
+    )
+  } catch (err) {
+    console.error(err)
+    res.sendStatus(500)
+  }
 }
 
 async function addFollow(req: Request, res: Response) {

@@ -1,7 +1,12 @@
 import { Request, Response, Router } from 'express'
 import { z } from 'zod'
 import { DATABASE_ERRORS, FORMATS, ROUTES } from '../constants'
-import { addVacation, removeVacation, updateVacation } from '../db/dal'
+import {
+  addVacation,
+  getAllVacations,
+  removeVacation,
+  updateVacation,
+} from '../db/dal'
 import {
   adminOnly,
   jwtVerify,
@@ -28,7 +33,13 @@ router.patch(
 router.delete(ROUTES.VACATIONS, [jwtVerify, adminOnly], handleVacationDelete)
 
 async function getVacationStats(req: Request, res: Response) {
-  res.status(200).send(res.locals.role)
+  try {
+    const vacations = await getAllVacations()
+    res.status(200).json(vacations)
+  } catch (err) {
+    console.error(err)
+    res.sendStatus(500)
+  }
 }
 
 async function handleVacationAdd(req: Request, res: Response) {

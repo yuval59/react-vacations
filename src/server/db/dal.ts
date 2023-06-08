@@ -150,3 +150,7 @@ export async function removeFollower(userId: string, vacationId: string) {
 
   console.log(`User ${follower.id} no longer follows ${vacation.id} `)
 }
+
+export async function getAllVacations() {
+  return Vacation.find()
+}
