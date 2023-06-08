@@ -7,6 +7,10 @@ const envVariables = z.object({
   DB_USER: z.string(),
   DB_PASS: z.string(),
   DB_DATABASE: z.string(),
+
+  PORT: z.string(),
+
+  JWT_SECRET: z.string(),
 })
 
 declare global {
