@@ -97,13 +97,10 @@ async function handleVacationUpdate(req: Request, res: Response) {
 
 async function handleVacationDelete(req: Request, res: Response) {
   try {
-    var id = z.string().parse(req.query.id)
-  } catch {
-    return res.sendStatus(400)
-  }
+    if (!req.query.id || typeof req.query.id != 'string')
+      return res.sendStatus(400)
 
-  try {
-    await removeVacation(id)
+    await removeVacation(req.query.id)
 
     res.sendStatus(200)
   } catch (err) {
