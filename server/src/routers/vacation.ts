@@ -32,13 +32,10 @@ async function getVacations(req: Request, res: Response) {
 
 async function addFollow(req: Request, res: Response) {
   try {
-    var vacationId = z.string().parse(req.query.id)
-  } catch {
-    return res.sendStatus(400)
-  }
+    if (!req.query.id || typeof req.query.id != 'string')
+      return res.sendStatus(400)
 
-  try {
-    await addFollower(res.locals.id, vacationId)
+    await addFollower(res.locals.id, req.query.id)
 
     res.sendStatus(200)
   } catch (err) {
@@ -57,13 +54,10 @@ async function addFollow(req: Request, res: Response) {
 
 async function deleteFollow(req: Request, res: Response) {
   try {
-    var vacationId = z.string().parse(req.query.id)
-  } catch {
-    return res.sendStatus(400)
-  }
+    if (!req.query.id || typeof req.query.id != 'string')
+      return res.sendStatus(400)
 
-  try {
-    await removeFollower(res.locals.id, vacationId)
+    await removeFollower(res.locals.id, req.query.id)
 
     res.sendStatus(200)
   } catch (err) {
