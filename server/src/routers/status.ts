@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
 import { ROUTES } from '../constants'
-import { jwtVerify } from '../middleware'
+import { adminOnly, jwtVerify } from '../middleware'
 
 const router = Router()
 
