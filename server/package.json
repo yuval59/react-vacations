@@ -1,12 +1,12 @@
 {
-  "name": "react-vacations",
-  "version": "0.1.0",
-  "description": "vacation tracking project for my class",
+  "name": "react-vacations-server",
+  "version": "1.0.0",
+  "description": "Nodejs server for the class project",
   "main": "dist/index.js",
   "scripts": {
     "prestart": "tsc",
     "start": "node dist",
-    "dev:run": "ts-node src/server/index"
+    "dev:run": "ts-node src/index"
   },
   "repository": {
     "type": "git",
