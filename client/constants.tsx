@@ -13,7 +13,7 @@ export const ROUTES = {
   ADMIN: '/admin',
 }
 
-export const DATE_FORMAT = 'DD-MM-YYYY'
+export const DATE_FORMAT = 'DD/MM/YYYY'
 
 export const ERROR_CODES = {
   BAD_REQUEST: 'ERR_BAD_REQUEST',

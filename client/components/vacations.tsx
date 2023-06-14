@@ -11,10 +11,21 @@ import {
 } from '../constants'
 import { Vacation } from '../types'
 
+const formatDate = (date: string) => dayjs(date).format(DATE_FORMAT)
+
 function VacationsComponent() {
   const router = useRouter()
   const [cookies, setCookie] = useCookies(['jwt'])
   const [vacations, setVacations] = useState<Vacation[]>([])
+  const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    getVacations()
+  }, [])
+
+  const logout = () => {
+    router.push(ROUTES.LOGIN)
+  }
 
   const getVacations = async () => {
     try {
@@ -42,75 +53,101 @@ function VacationsComponent() {
     }
   }
 
-  const tryFollow = async (e: React.MouseEvent<HTMLElement>) => {
-    try {
-      if (!('id' in e.target)) return
+  const follow = async (e: React.MouseEvent<HTMLElement>) => {
+    if (!('id' in e.target)) return
 
-      await axios.post(FETCH_ROUTES.BASE + FETCH_ROUTES.FOLLOW, '', {
-        params: { id: e.target.id },
-        headers: { Authorization: cookies.jwt },
-      })
+    await axios.post(FETCH_ROUTES.BASE + FETCH_ROUTES.FOLLOW, '', {
+      params: { id: e.target.id },
+      headers: { Authorization: cookies.jwt },
+    })
 
-      getVacations()
-    } catch {}
+    getVacations()
   }
 
-  const tryUnFollow = async (e: React.MouseEvent<HTMLElement>) => {
-    try {
-      if (!('id' in e.target)) return
+  const unfollow = async (e: React.MouseEvent<HTMLElement>) => {
+    if (!('id' in e.target)) return
 
-      await axios.delete(FETCH_ROUTES.BASE + FETCH_ROUTES.FOLLOW, {
-        params: { id: e.target.id },
-        headers: { Authorization: cookies.jwt },
-      })
+    await axios.delete(FETCH_ROUTES.BASE + FETCH_ROUTES.FOLLOW, {
+      params: { id: e.target.id },
+      headers: { Authorization: cookies.jwt },
+    })
 
-      getVacations()
-    } catch {}
+    getVacations()
   }
 
-  const getVacationCard = (vacation: Vacation) => (
-    <tr key={vacation.id} className={vacation.following ? 'table-primary' : ''}>
-      <td>{vacation.destination}</td>
-      <td>{vacation.description}</td>
-      <td>{vacation.price}</td>
-      <td>
-        <img src={vacation.picture}></img>
-      </td>
-      <td>{dayjs(vacation.start_date).format(DATE_FORMAT)}</td>
-      <td>{dayjs(vacation.end_date).format(DATE_FORMAT)}</td>
-      <td>
-        <button
-          id={vacation.id}
-          onClick={vacation.following ? tryUnFollow : tryFollow}
-          className="btn btn-outline-primary"
-        >
-          {vacation.following
-            ? BOOTSTRAP_ICONS.UNFOLLOW
-            : BOOTSTRAP_ICONS.FOLLOW}
-          {vacation.following ? 'Unfollow' : 'Follow'}
-        </button>
-      </td>
-    </tr>
+  const getFollowButton = (following: boolean, id: string) => (
+    <button
+      id={id}
+      onClick={following ? unfollow : follow}
+      className={following ? 'btn btn-danger' : 'btn btn-primary'}
+    >
+      {following ? 'Unfollow' : 'Follow'}
+    </button>
   )
 
-  useEffect(() => {
-    getVacations()
-  }, [])
+  const getVacationCard = (vacation: Vacation) => (
+    <div className="col">
+      <div className="card text-center">
+        <div className="card-header">{vacation.destination}</div>
+
+        {vacation.picture ? (
+          <img
+            src={vacation.picture}
+            className="card-img-top"
+            alt="Vacation Image"
+          />
+        ) : null}
+
+        <div className="card-body">
+          <h5 className="card-title">{`${formatDate(
+            vacation.start_date
+          )} to ${formatDate(vacation.end_date)}`}</h5>
+          <p className="card-text">{vacation.description}</p>
+          <p className="card-text">{vacation.price}</p>
+        </div>
+
+        <div className="card-body">
+          {getFollowButton(vacation.following, vacation.id)}
+        </div>
+      </div>
+    </div>
+  )
+
+  const getNavBar = () => (
+    <div className="navbar navbar-light bg-light mb-2 d-flex justify-content-around">
+      <a className="navbar-brand" href="#">
+        Navbar
+      </a>
+      <div>
+        <label className="me-2" htmlFor="searchBar">
+          Search
+        </label>
+        <input
+          type="text"
+          id="searchBar"
+          value={search}
+          onChange={({ target: { value } }) => {
+            setSearch(value)
+          }}
+        />
+      </div>
+      <button className="btn btn-info" onClick={logout}>
+        Log Out
+      </button>
+    </div>
+  )
 
   return (
-    <table className="table table-striped table-bordered align-middle bg-white">
-      <thead>
-        <tr>
-          <th>Destination</th>
-          <th>Description</th>
-          <th>Price</th>
-          <th>Picture</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-        </tr>
-      </thead>
-      <tbody>{vacations && vacations.map(getVacationCard)}</tbody>
-    </table>
+    <div>
+      {getNavBar()}
+      <div className="row row-cols-4">
+        {vacations
+          .filter((vacation) =>
+            vacation.destination.toLowerCase().includes(search.toLowerCase())
+          )
+          .map(getVacationCard)}
+      </div>
+    </div>
   )
 }
 
