@@ -20,7 +20,7 @@ async function getVacations(req: Request, res: Response) {
     const allVacations = await getAllVacations()
     res.status(200).json(
       allVacations.map((vacation) => ({
-        ...objectOmit(vacation, ['followers', 'id']),
+        ...objectOmit(vacation, ['followers']),
         following: vacation.followers.some((user) => user.id == id),
       }))
     )

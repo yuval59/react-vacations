@@ -1,9 +1,16 @@
+import cors from 'cors'
 import express, { Request, Response } from 'express'
 import config from './config'
 import { admin, login, register, status, vacation } from './routers'
 
 const app = express()
 app.use(express.json())
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+  })
+)
 
 app.use(register)
 app.use(status)
