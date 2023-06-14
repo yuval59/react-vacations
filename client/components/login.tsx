@@ -39,7 +39,7 @@ function LoginComponent() {
               <div className="mb-md-5 mt-md-4 pb-5">
                 <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
                 <p className="text-white-50 mb-5">
-                  Please enter your login and password!
+                  Please enter your username and password!
                 </p>
 
                 <div className="form-outline form-white mb-4">
@@ -48,8 +48,8 @@ function LoginComponent() {
                     type="text"
                     className="form-control form-control-lg"
                     value={username}
-                    onChange={(event) => {
-                      setUsername(event.target.value)
+                    onChange={({ target: { value } }) => {
+                      setUsername(value)
                     }}
                   />
                 </div>
@@ -60,8 +60,8 @@ function LoginComponent() {
                     type="password"
                     className="form-control form-control-lg"
                     value={password}
-                    onChange={(event) => {
-                      setPassword(event.target.value)
+                    onChange={({ target: { value } }) => {
+                      setPassword(value)
                     }}
                   />
                 </div>
@@ -76,7 +76,7 @@ function LoginComponent() {
 
               <div>
                 <p className="mb-0">
-                  Don't have an account?{' '}
+                  {`Don't have an account? `}
                   <a href="#" onClick={register} className="link-primary">
                     Sign Up
                   </a>

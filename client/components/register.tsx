@@ -55,8 +55,8 @@ function RegisterComponent() {
                     type="text"
                     className="form-control form-control-lg"
                     value={firstName}
-                    onChange={(event) => {
-                      setFirstName(event.target.value)
+                    onChange={({ target: { value } }) => {
+                      setFirstName(value)
                     }}
                   />
                 </div>
@@ -67,8 +67,8 @@ function RegisterComponent() {
                     type="text"
                     className="form-control form-control-lg"
                     value={lastName}
-                    onChange={(event) => {
-                      setLastName(event.target.value)
+                    onChange={({ target: { value } }) => {
+                      setLastName(value)
                     }}
                   />
                 </div>
@@ -79,8 +79,8 @@ function RegisterComponent() {
                     type="text"
                     className="form-control form-control-lg"
                     value={username}
-                    onChange={(event) => {
-                      setUsername(event.target.value)
+                    onChange={({ target: { value } }) => {
+                      setUsername(value)
                     }}
                   />
                 </div>
@@ -91,8 +91,8 @@ function RegisterComponent() {
                     type="password"
                     className="form-control form-control-lg"
                     value={password}
-                    onChange={(event) => {
-                      setPassword(event.target.value)
+                    onChange={({ target: { value } }) => {
+                      setPassword(value)
                     }}
                   />
                 </div>
@@ -107,7 +107,7 @@ function RegisterComponent() {
 
               <div>
                 <p className="mb-0">
-                  Already have an account?{' '}
+                  {'Already have an account? '}
                   <a href="#" onClick={login} className="link-primary">
                     Login
                   </a>
