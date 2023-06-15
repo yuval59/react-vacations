@@ -25,12 +25,6 @@ export function objectInclude<T extends object, K extends keyof T>(
 ): Prettify<Pick<T, K>> {
   const newObj: any = {}
 
-  console.log('obj')
-  console.log(obj)
-
-  console.log('keys')
-  console.log(keys)
-
   for (const key in obj) {
     if (keys.includes(key)) newObj[key] = obj[key]
   }
