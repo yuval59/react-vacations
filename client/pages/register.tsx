@@ -1,3 +1,3 @@
 import RegisterComponent from '../components/register'
 
-export default () => <RegisterComponent></RegisterComponent>
+export default () => <RegisterComponent />

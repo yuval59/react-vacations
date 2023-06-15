@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { FETCH_ROUTES, ROUTES } from '../constants'
+import { FETCH_ROUTES, ROLES, ROLES_VALUES, ROUTES } from '../constants'
 
 function LoginComponent() {
   const router = useRouter()
@@ -22,7 +22,12 @@ function LoginComponent() {
 
       setCookie('jwt', data.accessToken)
 
-      router.push('/')
+      switch (data.role as ROLES_VALUES) {
+        case 'user':
+          return router.push(ROUTES.VACATIONS)
+        case 'admin':
+          return router.push(ROUTES.ADMIN)
+      }
     } catch (err) {}
   }
 
