@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { DATABASE_ERRORS, ROUTES } from '../constants'
 import { addFollower, getAllVacations, removeFollower } from '../db/dal'
 import { jwtVerify } from '../middleware'
-import { objectOmit } from '../utils'
+import { objectExclude } from '../utils'
 
 const router = Router()
 
@@ -20,7 +20,7 @@ async function getVacations(req: Request, res: Response) {
     const allVacations = await getAllVacations()
     res.status(200).json(
       allVacations.map((vacation) => ({
-        ...objectOmit(vacation, ['followers']),
+        ...objectExclude(vacation, ['followers']),
         following: vacation.followers.some((user) => user.id == id),
       }))
     )

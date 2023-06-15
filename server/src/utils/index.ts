@@ -8,13 +8,32 @@ type Prettify<T> = {
   [K in keyof T]: T[K]
 } & {}
 
-export function objectOmit<T extends object, K extends keyof T>(
+export function objectExclude<T extends object, K extends keyof T>(
   obj: T,
   keys: K[]
 ): Prettify<Omit<T, K>> {
   const newObj: any = {}
 
   for (const key in obj) if (!keys.includes(key)) newObj[key] = obj[key]
+
+  return newObj
+}
+
+export function objectInclude<T extends object, K extends keyof T>(
+  obj: T,
+  keys: K[]
+): Prettify<Pick<T, K>> {
+  const newObj: any = {}
+
+  console.log('obj')
+  console.log(obj)
+
+  console.log('keys')
+  console.log(keys)
+
+  for (const key in obj) {
+    if (keys.includes(key)) newObj[key] = obj[key]
+  }
 
   return newObj
 }
