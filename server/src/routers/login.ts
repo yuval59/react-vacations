@@ -22,13 +22,15 @@ async function handleLogin(req: Request, res: Response) {
 
     const { id, is_admin } = user
 
+    const role = is_admin ? ROLES.ADMIN : ROLES.USER
+
     const accessToken = jwtSign({
       username,
       id,
-      role: is_admin ? ROLES.ADMIN : ROLES.USER,
+      role,
     })
 
-    res.status(200).json({ accessToken })
+    res.status(200).json({ accessToken, role })
   } catch (err) {
     console.error(err)
     res.sendStatus(500)
