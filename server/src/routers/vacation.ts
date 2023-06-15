@@ -1,5 +1,4 @@
 import { Request, Response, Router } from 'express'
-import { z } from 'zod'
 import { DATABASE_ERRORS, ROUTES } from '../constants'
 import { addFollower, getAllVacations, removeFollower } from '../db/dal'
 import { jwtVerify } from '../middleware'
