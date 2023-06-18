@@ -1,5 +1,7 @@
 # TODO
 
+- [ ] Vacation names?
+
 ## Server
 
 - [ ] Add socket.io implementation
@@ -8,6 +10,12 @@
 
 ## Client
 
-- [ ] Build the thing
+- [x] Build the thing
 
-  I will add more descriptive TODOs once there's at least a client skeleton
+- [ ] Change vacations into cards
+- [ ] Add NavBar - Logout + Search
+- [ ] Build the Admin Panel:
+  - [ ] Add Vacation
+  - [ ] Remove Vacation
+  - [ ] Edit Vacation
+  - [ ] Stats

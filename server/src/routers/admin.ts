@@ -13,7 +13,11 @@ import {
   verifyVacationCreationBody,
   verifyVacationUpdateBody,
 } from '../middleware'
-import { vacationCreationParams, vacationUpdateParams } from '../utils'
+import {
+  objectInclude,
+  vacationCreationParams,
+  vacationUpdateParams,
+} from '../utils'
 
 const router = Router()
 
@@ -35,7 +39,14 @@ router.delete(ROUTES.VACATIONS, [jwtVerify, adminOnly], handleVacationDelete)
 async function getVacationStats(req: Request, res: Response) {
   try {
     const vacations = await getAllVacations()
-    res.status(200).json(vacations)
+    res.status(200).json(
+      vacations.map((vacation) => ({
+        ...vacation,
+        followers: vacation.followers.map((user) =>
+          objectInclude(user, ['id', 'first_name', 'last_name', 'username'])
+        ),
+      }))
+    )
   } catch (err) {
     console.error(err)
     res.sendStatus(500)
