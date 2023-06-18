@@ -1,18 +1,7 @@
 import 'dotenv/config'
-import { z } from 'zod'
-
-const envVariables = z.object({
-  SERVER: z.string(),
-})
-
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof envVariables> {}
-  }
-}
 
 export const FETCH_ROUTES = {
-  BASE: envVariables.parse(process.env).SERVER,
+  BASE: process.env.SERVER,
   VACATIONS: '/vacations',
   LOGIN: '/login',
   REGISTER: '/register',
