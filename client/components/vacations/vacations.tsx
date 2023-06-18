@@ -1,31 +1,21 @@
 import dayjs from 'dayjs'
-import { useEffect } from 'react'
 import { DATE_FORMAT } from '../../constants'
+import { AdminVacation, VacationsComponentProps } from './'
 import { AdminCardComponent, UserCardComponent } from './cards'
-import { AdminVacation, AsAdmin, AsUser } from './types'
 
 export const formatDate = (date: string) => dayjs(date).format(DATE_FORMAT)
 
-function VacationsComponent(props: { params: AsAdmin | AsUser }) {
-  const {
-    role,
-    vacationProps: { getVacations, vacations, jwt },
-  } = props.params
-
-  useEffect(() => {
-    getVacations()
-  }, [])
+export default (props: VacationsComponentProps) => {
+  const { role } = props
 
   const getCards = () => {
     switch (role) {
       case 'user': {
-        const { searchProps } = props.params
+        const { search, getVacations, jwt, vacations } = props.params
 
         return vacations
           .filter((vacation) =>
-            vacation.destination
-              .toLowerCase()
-              .includes(searchProps.toLowerCase())
+            vacation.destination.toLowerCase().includes(search.toLowerCase())
           )
           .map((vacation) => (
             <UserCardComponent
@@ -35,17 +25,18 @@ function VacationsComponent(props: { params: AsAdmin | AsUser }) {
           ))
       }
 
-      case 'admin':
+      case 'admin': {
+        const { setVacation, deleteVacation, vacations } = props.params
+
         return vacations.map((vacation: AdminVacation) => (
           <AdminCardComponent
             key={vacation.id}
-            params={{ vacation, formatDate }}
+            params={{ vacation, formatDate, setVacation, deleteVacation }}
           />
         ))
+      }
     }
   }
 
   return <div className="row row-cols-5">{getCards()}</div>
 }
-
-export default VacationsComponent

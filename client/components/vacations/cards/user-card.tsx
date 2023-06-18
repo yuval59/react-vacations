@@ -1,7 +1,7 @@
-import FollowButtonComponent from './follow-button'
-import { UserCardProps } from './types'
+import { UserCardProps } from '../'
+import { FollowButton } from '../buttons'
 
-function UserCardComponent(props: UserCardProps) {
+export default (props: UserCardProps) => {
   const {
     params: { getVacations, jwt, vacation, formatDate },
   } = props
@@ -28,7 +28,7 @@ function UserCardComponent(props: UserCardProps) {
         </div>
 
         <div className="card-body">
-          <FollowButtonComponent
+          <FollowButton
             following={vacation.following}
             vacationId={vacation.id}
             jwt={jwt}
@@ -39,5 +39,3 @@ function UserCardComponent(props: UserCardProps) {
     </div>
   )
 }
-
-export default UserCardComponent

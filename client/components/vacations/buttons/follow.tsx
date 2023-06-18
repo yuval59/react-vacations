@@ -1,14 +1,8 @@
 import axios from 'axios'
+import { FollowButtonProps } from '../'
 import { FETCH_ROUTES } from '../../../constants'
 
-type FollowButtonProps = {
-  following: boolean
-  vacationId: string
-  jwt: string
-  getVacations: () => void
-}
-
-function FollowButtonComponent(props: FollowButtonProps) {
+export default (props: FollowButtonProps) => {
   const { following, vacationId, jwt, getVacations } = props
 
   const follow = async (e: React.MouseEvent<HTMLElement>) => {
@@ -43,5 +37,3 @@ function FollowButtonComponent(props: FollowButtonProps) {
     </button>
   )
 }
-
-export default FollowButtonComponent

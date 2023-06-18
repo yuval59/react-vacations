@@ -1,8 +1,25 @@
-import { AdminCardProps } from './types'
+import { useState } from 'react'
+import {
+  AdminCardProps,
+  DeleteButton,
+  DeletePopup,
+  EditButton,
+  EditPopup,
+} from '../'
 
-function AdminCardComponent(props: AdminCardProps) {
+export default (props: AdminCardProps) => {
+  const [edit, setEdit] = useState(false)
+
+  const openEdit = () => setEdit(true)
+  const closeEdit = () => setEdit(false)
+
+  const [Delete, setDelete] = useState(false)
+
+  const openDelete = () => setDelete(true)
+  const closeDelete = () => setDelete(false)
+
   const {
-    params: { vacation, formatDate },
+    params: { vacation, formatDate, setVacation, deleteVacation },
   } = props
 
   return (
@@ -25,9 +42,31 @@ function AdminCardComponent(props: AdminCardProps) {
           <p className="card-text">{vacation.description}</p>
           <p className="card-text">{vacation.price}</p>
         </div>
+
+        <div className="card-body">
+          <EditButton params={{ openTooltip: openEdit }} />
+          <EditPopup
+            params={{
+              open: edit,
+              closeTooltip: closeEdit,
+              vacation,
+              setVacation,
+            }}
+          />
+        </div>
+
+        <div className="card-body">
+          <DeleteButton params={{ openTooltip: openDelete }}></DeleteButton>
+          <DeletePopup
+            params={{
+              open: Delete,
+              closeTooltip: closeDelete,
+              deleteVacation,
+              vacation,
+            }}
+          ></DeletePopup>
+        </div>
       </div>
     </div>
   )
 }
-
-export default AdminCardComponent

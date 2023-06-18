@@ -1,7 +1,7 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import NavbarComponent from '../components/navbar'
 import { Vacation, VacationsComponent } from '../components/vacations'
@@ -12,6 +12,10 @@ export default () => {
   const [cookies, setCookie] = useCookies(['jwt'])
   const [search, setSearch] = useState('')
   const [vacations, setVacations] = useState<Vacation[]>([])
+
+  useEffect(() => {
+    getVacations()
+  }, [])
 
   const getVacations = async () => {
     try {
@@ -39,14 +43,32 @@ export default () => {
     }
   }
 
+  const searchElement = (
+    <div>
+      <label className="me-2" htmlFor="searchBar">
+        Search
+      </label>
+      <input
+        type="text"
+        id="searchBar"
+        value={search}
+        onChange={({ target: { value } }) => {
+          setSearch(value)
+        }}
+      />
+    </div>
+  )
+
   return (
     <div className="container-fluid overflow-hidden">
-      <NavbarComponent searchProps={{ search, setSearch }} />
+      <NavbarComponent middleElement={searchElement} />
       <VacationsComponent
+        role={ROLES.USER}
         params={{
-          vacationProps: { vacations, getVacations, jwt: cookies.jwt },
-          searchProps: search,
-          role: ROLES.USER,
+          vacations,
+          getVacations,
+          jwt: cookies.jwt,
+          search,
         }}
       />
     </div>
