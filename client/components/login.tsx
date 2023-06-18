@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { FETCH_ROUTES, ROLES, ROLES_VALUES, ROUTES } from '../constants'
+import { FETCH_ROUTES, ROLES_VALUES, ROUTES } from '../constants'
 
 function LoginComponent() {
   const router = useRouter()

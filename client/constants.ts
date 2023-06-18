@@ -1,5 +1,7 @@
+import 'dotenv/config'
+
 export const FETCH_ROUTES = {
-  BASE: 'http://localhost:3030',
+  BASE: process.env.SERVER,
   VACATIONS: '/vacations',
   LOGIN: '/login',
   REGISTER: '/register',
