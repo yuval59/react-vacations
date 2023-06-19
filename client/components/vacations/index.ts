@@ -1,30 +1,6 @@
-import { VacationCreationParams, VacationUpdateParams } from './types'
+import { VacationCreationParams, VacationUpdateParams } from '../'
 
-export type {
-  AddButtonProps,
-  AddPopupProps,
-  AddVacation,
-  AdminCardProps,
-  AdminVacation,
-  DeleteButtonProps,
-  DeletePopupProps,
-  DeleteVacation,
-  EditButtonProps,
-  EditPopupProps,
-  FollowButtonProps,
-  Follower,
-  SetVacation,
-  UserCardProps,
-  Vacation,
-  VacationCreationParams,
-  VacationUpdateParams,
-  VacationsComponentProps,
-} from './types'
 export { default as VacationsComponent, formatDate } from './vacations'
-
-export { AddButton, DeleteButton, EditButton, FollowButton } from './buttons'
-export { AdminCardComponent, UserCardComponent } from './cards'
-export { AddPopup, DeletePopup, EditPopup } from './popups'
 
 export type Prettify<T> = {
   [K in keyof T]: T[K]

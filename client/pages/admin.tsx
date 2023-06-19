@@ -1,3 +1,3 @@
-import AdminComponent from '../components/admin'
+import { AdminComponent } from '../components'
 
 export default () => <AdminComponent />

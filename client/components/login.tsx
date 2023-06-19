@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { FETCH_ROUTES, ROLES_VALUES, ROUTES } from '../constants'
 
-function LoginComponent() {
+export default () => {
   const router = useRouter()
   const [cookies, setCookie] = useCookies(['jwt'])
   const [username, setUsername] = useState('')
@@ -25,6 +25,7 @@ function LoginComponent() {
       switch (data.role as ROLES_VALUES) {
         case 'user':
           return router.push(ROUTES.VACATIONS)
+
         case 'admin':
           return router.push(ROUTES.ADMIN)
       }
@@ -94,5 +95,3 @@ function LoginComponent() {
     </div>
   )
 }
-
-export default LoginComponent

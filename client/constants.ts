@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 export const FETCH_ROUTES = {
   BASE: process.env.SERVER,
   VACATIONS: '/vacations',

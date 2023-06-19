@@ -3,18 +3,18 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { FETCH_ROUTES, ROLES, ROUTES } from '../constants'
-import NavbarComponent from './navbar'
 import {
   AddButton,
   AddPopup,
   AdminVacation,
+  NavbarComponent,
   VacationCreationParams,
   VacationUpdateParams,
   VacationsComponent,
   removeNulls,
-} from './vacations'
+} from './'
 
-function AdminComponent() {
+export default () => {
   const router = useRouter()
   const [cookies, setCookie] = useCookies(['jwt'])
   const [vacations, setVacations] = useState<AdminVacation[]>([])
@@ -124,5 +124,3 @@ function AdminComponent() {
     </div>
   )
 }
-
-export default AdminComponent

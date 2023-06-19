@@ -1,33 +1,21 @@
-import { ROLES } from '../../constants'
-import { formatDate } from './'
+import { ROLES } from '../constants'
+import { formatDate } from './vacations'
 
+type VoidFunction = () => void
 type IncludeSearch = { search: string }
-type IncludeVacations<VacationType = Vacation> = {
-  vacations: VacationType[]
-}
-type IncludeSetVacation = {
-  setVacation: SetVacation
-}
-type IncludeGetVacation = {
-  getVacations: () => void
-}
-type IncludeDeleteVacation = {
-  deleteVacation: DeleteVacation
-}
-type IncludeAddVacation = {
-  addVacation: AddVacation
-}
-type IncludeJwt = {
-  jwt: string
-}
-type IncludePopupProps = {
-  open: boolean
-  closeTooltip: () => void
-}
+type IncludeVacations<VacationType = Vacation> = { vacations: VacationType[] }
+type IncludeSetVacation = { setVacation: SetVacation }
+type IncludeGetVacations = { getVacations: VoidFunction }
+type IncludeDeleteVacation = { deleteVacation: DeleteVacation }
+type IncludeAddVacation = { addVacation: AddVacation }
+type IncludeJwt = { jwt: string }
+type IncludeOpenTooltip = { openTooltip: VoidFunction }
+type IncludeCloseTooltip = { closeTooltip: VoidFunction }
+type IncludePopupProps = { open: boolean } & IncludeCloseTooltip
 
 type VacationsAsUser = {
   role: typeof ROLES.USER
-  params: IncludeVacations & IncludeSearch & IncludeGetVacation & IncludeJwt
+  params: IncludeVacations & IncludeSearch & IncludeGetVacations & IncludeJwt
 }
 
 type VacationsAsAdmin = {
@@ -94,7 +82,7 @@ export type DeleteVacation = (id: string) => void
 export type AddVacation = (params: VacationCreationParams) => void
 
 export type UserCardProps = {
-  params: IncludeVacation & IncludeGetVacation & IncludeJwt & IncludeFormatDate
+  params: IncludeVacation & IncludeGetVacations & IncludeJwt & IncludeFormatDate
 }
 
 export type AdminCardProps = {
@@ -107,12 +95,11 @@ export type AdminCardProps = {
 export type FollowButtonProps = {
   following: boolean
   vacationId: string
-  jwt: string
-  getVacations: () => void
-}
+} & IncludeGetVacations &
+  IncludeJwt
 
 export type DeleteButtonProps = {
-  params: { openTooltip: () => void }
+  params: IncludeOpenTooltip
 }
 
 export type DeletePopupProps = {
@@ -122,7 +109,7 @@ export type DeletePopupProps = {
 }
 
 export type EditButtonProps = {
-  params: { openTooltip: () => void }
+  params: IncludeOpenTooltip
 }
 
 export type EditPopupProps = {
@@ -132,9 +119,31 @@ export type EditPopupProps = {
 }
 
 export type AddButtonProps = {
-  params: { openTooltip: () => void }
+  params: IncludeOpenTooltip
 }
 
 export type AddPopupProps = {
   params: IncludePopupProps & IncludeAddVacation
+}
+
+export type UserInfo = {
+  first_name: string
+  last_name: string
+  username: string
+  password: string
+}
+
+export type RegisterButtonProps = {
+  params: {
+    userInfo: UserInfo
+    onSuccess: (value: string) => void
+    onFail: (value: string) => void
+  }
+}
+
+export type RegisterPopupProps = {
+  params: {
+    onSuccess: (value: string) => void
+    userInfo: UserInfo
+  }
 }

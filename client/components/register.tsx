@@ -1,40 +1,51 @@
-import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { ERROR_CODES, FETCH_ROUTES, ROUTES } from '../constants'
+import { ROUTES } from '../constants'
+import { RegisterPopup, UserInfo } from './'
 
-function RegisterComponent() {
+export default () => {
   const router = useRouter()
   const [cookies, setCookie] = useCookies(['jwt'])
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [err, setErr] = useState('')
+  const [userInfo, setUserInfo]: [
+    UserInfo,
+    Dispatch<SetStateAction<UserInfo>>
+  ] = useState({
+    first_name: '',
+    last_name: '',
+    username: '',
+    password: '',
+  })
 
-  async function tryRegister() {
-    try {
-      const { data } = await axios.post(
-        FETCH_ROUTES.BASE + FETCH_ROUTES.REGISTER,
-        {
-          first_name: firstName,
-          last_name: lastName,
-          username,
-          password,
-        }
-      )
+  const setRoute = (destination: (typeof ROUTES)[keyof typeof ROUTES]) => () =>
+    router.push(destination)
 
-      setCookie('jwt', data.accessToken)
-
-      router.push('/')
-    } catch (err) {
-      if (err.code == ERROR_CODES.BAD_REQUEST) return setErr(err.response.data)
-    }
+  const onSuccess = (value: string) => {
+    setCookie('jwt', value)
+    setRoute(ROUTES.VACATIONS)()
   }
 
-  function login() {
-    router.push(ROUTES.LOGIN)
+  const getInputField = (
+    name: string,
+    key: keyof UserInfo,
+    type: string = 'text'
+  ) => (
+    <div className="form-outline form-white mb-4">
+      <label className="form-label">{name}</label>
+      <input
+        type={type}
+        className="form-control form-control-lg"
+        value={userInfo[key]}
+        onChange={({ target: { value } }) => {
+          setUserInfo({ ...userInfo, [key]: value })
+        }}
+      />
+    </div>
+  )
+
+  const RegisterPopupParams = {
+    onSuccess,
+    userInfo,
   }
 
   return (
@@ -49,66 +60,25 @@ function RegisterComponent() {
                   Please enter your details below!
                 </p>
 
-                <div className="form-outline form-white mb-4">
-                  <label className="form-label">First name</label>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    value={firstName}
-                    onChange={({ target: { value } }) => {
-                      setFirstName(value)
-                    }}
-                  />
-                </div>
+                {getInputField('First name', 'first_name')}
 
-                <div className="form-outline form-white mb-4">
-                  <label className="form-label">Last name</label>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    value={lastName}
-                    onChange={({ target: { value } }) => {
-                      setLastName(value)
-                    }}
-                  />
-                </div>
+                {getInputField('Last name', 'last_name')}
 
-                <div className="form-outline form-white mb-4">
-                  <label className="form-label">Username</label>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    value={username}
-                    onChange={({ target: { value } }) => {
-                      setUsername(value)
-                    }}
-                  />
-                </div>
+                {getInputField('Username', 'username')}
 
-                <div className="form-outline form-white mb-4">
-                  <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control form-control-lg"
-                    value={password}
-                    onChange={({ target: { value } }) => {
-                      setPassword(value)
-                    }}
-                  />
-                </div>
+                {getInputField('Password', 'password', 'password')}
 
-                <button
-                  onClick={tryRegister}
-                  className="btn btn-outline-light btn-primary btn-lg px-5"
-                >
-                  Register
-                </button>
+                <RegisterPopup params={RegisterPopupParams}></RegisterPopup>
               </div>
 
               <div>
                 <p className="mb-0">
                   {'Already have an account? '}
-                  <a href="#" onClick={login} className="link-primary">
+                  <a
+                    href="#"
+                    onClick={setRoute(ROUTES.LOGIN)}
+                    className="link-primary"
+                  >
                     Login
                   </a>
                 </p>
@@ -120,5 +90,3 @@ function RegisterComponent() {
     </div>
   )
 }
-
-export default RegisterComponent

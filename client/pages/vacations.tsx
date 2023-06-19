@@ -3,8 +3,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import NavbarComponent from '../components/navbar'
-import { Vacation, VacationsComponent } from '../components/vacations'
+import { NavbarComponent, Vacation, VacationsComponent } from '../components'
 import { FETCH_ROUTES, ROLES, ROUTES } from '../constants'
 
 export default () => {
