@@ -1,19 +1,8 @@
-import { useRouter } from 'next/router'
-import { ReactNode } from 'react'
-import { ROUTES } from '../constants'
-
-type NavbarProps = {
-  middleElement: ReactNode
-}
+import { NavbarProps } from './'
+import { LogoutButton } from './buttons'
 
 export default (props: NavbarProps) => {
-  const router = useRouter()
-
-  const logout = () => {
-    router.push(ROUTES.LOGIN)
-  }
-
-  const { middleElement } = props
+  const { middleElement, logoutParams } = props.params
 
   return (
     <div className="navbar navbar-light bg-light mb-2 d-flex justify-content-around">
@@ -21,9 +10,7 @@ export default (props: NavbarProps) => {
         Navbar
       </a>
       {middleElement}
-      <button className="btn btn-info" onClick={logout}>
-        Log Out
-      </button>
+      <LogoutButton params={logoutParams} />
     </div>
   )
 }
