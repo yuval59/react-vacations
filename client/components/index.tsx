@@ -11,11 +11,12 @@ export type {
   EditPopupProps,
   FollowButtonProps,
   Follower,
+  LoginButtonProps,
+  LoginUserInfo,
   RegisterButtonProps,
-  RegisterPopupProps,
+  RegisterUserInfo,
   SetVacation,
   UserCardProps,
-  UserInfo,
   Vacation,
   VacationCreationParams,
   VacationUpdateParams,
@@ -34,10 +35,11 @@ export {
   DeleteButton,
   EditButton,
   FollowButton,
+  LoginButton,
   RegisterButton,
 } from './buttons'
 export { AdminCardComponent, UserCardComponent } from './cards'
-export { AddPopup, DeletePopup, EditPopup, RegisterPopup } from './popups'
+export { AddPopup, DeletePopup, EditPopup } from './popups'
 
 export { default as AdminComponent } from './admin'
 export { default as LoginComponent } from './login'

@@ -1,18 +1,16 @@
 import axios, { AxiosError } from 'axios'
-import { RegisterButtonProps } from '../'
-import { ERROR_CODES, FETCH_ROUTES } from '../../constants'
+import { LoginButtonProps } from '../'
+import { ERROR_CODES, FETCH_ROUTES, ROLES_VALUES } from '../../constants'
 
-export default (props: RegisterButtonProps) => {
+export default (props: LoginButtonProps) => {
   const { userInfo, onSuccess, setMessage } = props.params
 
-  async function tryRegister() {
+  async function tryLogin() {
     try {
-      const { data }: { data: { accessToken: string } } = await axios.post(
-        FETCH_ROUTES.BASE + FETCH_ROUTES.REGISTER,
-        userInfo
-      )
+      const { data }: { data: { accessToken: string; role: ROLES_VALUES } } =
+        await axios.post(FETCH_ROUTES.BASE + FETCH_ROUTES.LOGIN, userInfo)
 
-      onSuccess(data.accessToken)
+      onSuccess(data.accessToken, data.role)
     } catch (err: unknown) {
       const errors = err as Error | AxiosError
 
@@ -23,10 +21,10 @@ export default (props: RegisterButtonProps) => {
 
   return (
     <button
-      onClick={tryRegister}
+      onClick={tryLogin}
       className="btn btn-outline-light btn-primary btn-lg px-5"
     >
-      Register
+      Login
     </button>
   )
 }

@@ -1,40 +1,55 @@
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { FETCH_ROUTES, ROLES_VALUES, ROUTES } from '../constants'
+import { ROLES_VALUES, ROUTES } from '../constants'
+import { LoginButton, LoginUserInfo } from './'
 
 export default () => {
   const router = useRouter()
   const [cookies, setCookie] = useCookies(['jwt'])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [userInfo, setUserInfo] = useState({
+    username: '',
+    password: '',
+  })
+  const [message, setMessage] = useState('')
 
-  async function tryLogin() {
-    try {
-      const { data } = await axios.post(
-        FETCH_ROUTES.BASE + FETCH_ROUTES.LOGIN,
-        {
-          username,
-          password,
-        }
-      )
+  const setRoute = (destination: (typeof ROUTES)[keyof typeof ROUTES]) => () =>
+    router.push(destination)
 
-      setCookie('jwt', data.accessToken)
+  const onSuccess = (jwt: string, role: ROLES_VALUES) => {
+    setCookie('jwt', jwt)
 
-      switch (data.role as ROLES_VALUES) {
-        case 'user':
-          return router.push(ROUTES.VACATIONS)
+    switch (role) {
+      case 'user':
+        return setRoute(ROUTES.VACATIONS)()
 
-        case 'admin':
-          return router.push(ROUTES.ADMIN)
-      }
-    } catch (err) {}
+      case 'admin':
+        return setRoute(ROUTES.ADMIN)()
+    }
   }
 
-  function register() {
-    router.push(ROUTES.REGISTER)
-  }
+  const LoginButtonParams = { userInfo, onSuccess, setMessage }
+
+  const getInputField = (
+    name: string,
+    key: keyof LoginUserInfo,
+    type: string = 'text'
+  ) => (
+    <div className="form-outline form-white mb-4">
+      <label className="form-label">{name}</label>
+      <input
+        type={type}
+        className="form-control form-control-lg"
+        value={userInfo[key]}
+        onChange={({ target: { value } }) => {
+          setUserInfo({
+            ...userInfo,
+            [key]: value,
+          })
+        }}
+      />
+    </div>
+  )
 
   return (
     <div className="container py-5 h-100">
@@ -48,42 +63,25 @@ export default () => {
                   Please enter your username and password!
                 </p>
 
-                <div className="form-outline form-white mb-4">
-                  <label className="form-label">Username</label>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    value={username}
-                    onChange={({ target: { value } }) => {
-                      setUsername(value)
-                    }}
-                  />
+                <div className="text-danger" hidden={message == ''}>
+                  {message}
                 </div>
 
-                <div className="form-outline form-white mb-4">
-                  <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control form-control-lg"
-                    value={password}
-                    onChange={({ target: { value } }) => {
-                      setPassword(value)
-                    }}
-                  />
-                </div>
+                {getInputField('Username', 'username')}
 
-                <button
-                  onClick={tryLogin}
-                  className="btn btn-outline-light btn-primary btn-lg px-5"
-                >
-                  Login
-                </button>
+                {getInputField('Password', 'password', 'password')}
+
+                <LoginButton params={LoginButtonParams}></LoginButton>
               </div>
 
               <div>
                 <p className="mb-0">
                   {`Don't have an account? `}
-                  <a href="#" onClick={register} className="link-primary">
+                  <a
+                    href="#"
+                    onClick={setRoute(ROUTES.REGISTER)}
+                    className="link-primary"
+                  >
                     Sign Up
                   </a>
                 </p>

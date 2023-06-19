@@ -1,4 +1,4 @@
-import { ROLES } from '../constants'
+import { ROLES, ROLES_KEYS, ROLES_VALUES } from '../constants'
 import { formatDate } from './vacations'
 
 type VoidFunction = () => void
@@ -126,24 +126,30 @@ export type AddPopupProps = {
   params: IncludePopupProps & IncludeAddVacation
 }
 
-export type UserInfo = {
+export type RegisterUserInfo = {
   first_name: string
   last_name: string
   username: string
   password: string
 }
 
+type IncludeSetMessage = { setMessage: (value: string) => void }
+
 export type RegisterButtonProps = {
   params: {
-    userInfo: UserInfo
+    userInfo: RegisterUserInfo
     onSuccess: (value: string) => void
-    onFail: (value: string) => void
-  }
+  } & IncludeSetMessage
 }
 
-export type RegisterPopupProps = {
+export type LoginUserInfo = {
+  username: string
+  password: string
+}
+
+export type LoginButtonProps = {
   params: {
-    onSuccess: (value: string) => void
-    userInfo: UserInfo
-  }
+    userInfo: LoginUserInfo
+    onSuccess: (jwt: string, role: ROLES_VALUES) => void
+  } & IncludeSetMessage
 }

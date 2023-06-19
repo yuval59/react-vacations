@@ -1,16 +1,13 @@
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { ROUTES } from '../constants'
-import { RegisterPopup, UserInfo } from './'
+import { RegisterButton, RegisterUserInfo } from './'
 
 export default () => {
   const router = useRouter()
   const [cookies, setCookie] = useCookies(['jwt'])
-  const [userInfo, setUserInfo]: [
-    UserInfo,
-    Dispatch<SetStateAction<UserInfo>>
-  ] = useState({
+  const [userInfo, setUserInfo] = useState({
     first_name: '',
     last_name: '',
     username: '',
@@ -25,9 +22,11 @@ export default () => {
     setRoute(ROUTES.VACATIONS)()
   }
 
+  const [message, setMessage] = useState('')
+
   const getInputField = (
     name: string,
-    key: keyof UserInfo,
+    key: keyof RegisterUserInfo,
     type: string = 'text'
   ) => (
     <div className="form-outline form-white mb-4">
@@ -43,9 +42,10 @@ export default () => {
     </div>
   )
 
-  const RegisterPopupParams = {
+  const RegisterButtonParams = {
     onSuccess,
     userInfo,
+    setMessage,
   }
 
   return (
@@ -60,6 +60,10 @@ export default () => {
                   Please enter your details below!
                 </p>
 
+                <div className="text-danger" hidden={message == ''}>
+                  {message}
+                </div>
+
                 {getInputField('First name', 'first_name')}
 
                 {getInputField('Last name', 'last_name')}
@@ -68,7 +72,7 @@ export default () => {
 
                 {getInputField('Password', 'password', 'password')}
 
-                <RegisterPopup params={RegisterPopupParams}></RegisterPopup>
+                <RegisterButton params={RegisterButtonParams}></RegisterButton>
               </div>
 
               <div>
