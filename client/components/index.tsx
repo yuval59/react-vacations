@@ -30,7 +30,7 @@ export type {
   VacationsComponentProps,
 } from './types'
 
-export { VacationsComponent, formatDate, objectExclude } from './vacations'
+export { formatDate } from './vacations'
 
 export {
   AddButton,
@@ -46,6 +46,7 @@ export {
   addVacationConstructor,
   deleteVacationConstructor,
   getVacationsConstructor,
+  objectExclude,
   setVacationConstructor,
 } from './utils'
 
@@ -53,3 +54,4 @@ export { default as AdminComponent } from './admin'
 export { default as LoginComponent } from './login'
 export { default as NavbarComponent } from './navbar'
 export { default as RegisterComponent } from './register'
+export { default as VacationsComponent } from './vacations'

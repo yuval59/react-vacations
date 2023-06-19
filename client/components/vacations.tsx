@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
-import { AdminVacation, VacationsComponentProps } from '../'
-import { DATE_FORMAT } from '../../constants'
-import { AdminCardComponent, UserCardComponent } from '../cards'
+import { AdminVacation, VacationsComponentProps } from '.'
+import { DATE_FORMAT } from '../constants'
+import { AdminCardComponent, UserCardComponent } from './cards'
 
 export const formatDate = (date: string) => dayjs(date).format(DATE_FORMAT)
 
