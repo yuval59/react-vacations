@@ -1,96 +1,63 @@
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { FETCH_ROUTES, ROLES, ROUTES } from '../constants'
+import { ROLES, ROUTES } from '../constants'
 import {
   AddButton,
   AddPopup,
   AdminVacation,
   NavbarComponent,
-  VacationCreationParams,
-  VacationUpdateParams,
   VacationsComponent,
-  removeNulls,
+  addVacationConstructor,
+  deleteVacationConstructor,
+  getVacationsConstructor,
+  setVacationConstructor,
 } from './'
 
 export default () => {
   const router = useRouter()
-  const [cookies, setCookie] = useCookies(['jwt'])
+  const [{ jwt }, setCookie] = useCookies(['jwt'])
   const [vacations, setVacations] = useState<AdminVacation[]>([])
   const [addPopup, setAddPopup] = useState(false)
 
   const openTooltip = () => setAddPopup(true)
   const closeTooltip = () => setAddPopup(false)
 
+  const getVacations = getVacationsConstructor<AdminVacation>({
+    jwt,
+    setVacations,
+    onFail: (err: unknown) => {
+      router.push(ROUTES.LOGIN)
+    },
+  })
+
+  const addVacation = addVacationConstructor({
+    jwt,
+    getVacations,
+    onFail: (err: unknown) => {},
+  })
+
+  const setVacation = setVacationConstructor({
+    jwt,
+    vacations,
+    setVacations,
+    onFail: (err: unknown) => {},
+  })
+
+  const deleteVacation = deleteVacationConstructor({
+    jwt,
+    vacations,
+    setVacations,
+    onFail: (err: unknown) => {},
+  })
+
   useEffect(() => {
     getVacations()
   }, [])
 
-  const getVacations = async () => {
-    try {
-      const { data }: { data: AdminVacation[] } = await axios.get(
-        FETCH_ROUTES.BASE + FETCH_ROUTES.STATS,
-        {
-          headers: { Authorization: cookies.jwt },
-        }
-      )
-
-      setVacations(data)
-    } catch {
-      router.push(ROUTES.LOGIN)
-    }
-  }
-
-  const setVacation = async (params: VacationUpdateParams) => {
-    try {
-      await axios.patch(
-        FETCH_ROUTES.BASE + FETCH_ROUTES.VACATIONS,
-        removeNulls(params),
-        {
-          headers: { Authorization: cookies.jwt },
-        }
-      )
-
-      setVacations(
-        vacations.map((vacation) => {
-          if (vacation.id != params.id) return vacation
-          for (const key in params) vacation[key] = params[key]
-          return vacation
-        })
-      )
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const deleteVacation = async (id: string) => {
-    try {
-      await axios.delete(FETCH_ROUTES.BASE + FETCH_ROUTES.VACATIONS, {
-        headers: { Authorization: cookies.jwt },
-        params: { id },
-      })
-
-      setVacations(vacations.filter((vacation) => vacation.id != id))
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const addVacation = async (params: VacationCreationParams) => {
-    try {
-      await axios.post(
-        FETCH_ROUTES.BASE + FETCH_ROUTES.VACATIONS,
-        removeNulls(params),
-        {
-          headers: { Authorization: cookies.jwt },
-        }
-      )
-
-      getVacations()
-    } catch (err) {
-      console.error(err)
-    }
+  const logout = () => {
+    setCookie('jwt', '')
+    router.push(ROUTES.LOGIN)
   }
 
   const addVacationElement = (
@@ -110,9 +77,14 @@ export default () => {
     </div>
   )
 
+  const navbarParams = {
+    middleElement: addVacationElement,
+    logoutParams: { logout },
+  }
+
   return (
     <div className="container-fluid overflow-hidden">
-      <NavbarComponent middleElement={addVacationElement} />
+      <NavbarComponent params={navbarParams} />
       <VacationsComponent
         role={ROLES.ADMIN}
         params={{

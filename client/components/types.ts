@@ -1,4 +1,5 @@
-import { ROLES, ROLES_KEYS, ROLES_VALUES } from '../constants'
+import { ReactNode } from 'react'
+import { ROLES, ROLES_VALUES } from '../constants'
 import { formatDate } from './vacations'
 
 type VoidFunction = () => void
@@ -152,4 +153,43 @@ export type LoginButtonProps = {
     userInfo: LoginUserInfo
     onSuccess: (jwt: string, role: ROLES_VALUES) => void
   } & IncludeSetMessage
+}
+
+type IncludeSetVacations<VacationType = Vacation> = {
+  setVacations: (vacations: VacationType[]) => void
+}
+
+type IncludeOnFail = { onFail: (err: unknown) => void }
+
+export type VacationTypeUnion = Vacation | AdminVacation
+
+export type GetVacationsParams<
+  VacationType extends VacationTypeUnion = Vacation
+> = IncludeOnFail & IncludeJwt & IncludeSetVacations<VacationType>
+
+export type SetVacationParams = IncludeOnFail &
+  IncludeJwt &
+  IncludeVacations<AdminVacation> &
+  IncludeSetVacations<AdminVacation>
+
+export type DeleteVacationParams = IncludeOnFail &
+  IncludeJwt &
+  IncludeVacations<AdminVacation> &
+  IncludeSetVacations<AdminVacation>
+
+export type AddVacationParams = IncludeOnFail & IncludeJwt & IncludeGetVacations
+
+export type NavbarProps = {
+  params: {
+    middleElement: ReactNode
+    logoutParams: LogoutButtonParams
+  }
+}
+
+export type LogoutButtonParams = {
+  logout: VoidFunction
+}
+
+export type LogoutButtonProps = {
+  params: LogoutButtonParams
 }
