@@ -5,11 +5,10 @@ import {
   IncludePopupProps,
   IncludeSetVacation,
   IncludeVacation,
-  IncludeVacations,
 } from './misc'
 
 export type DeletePopupProps = {
-  params: IncludeVacations<AdminVacation> &
+  params: IncludeVacation<AdminVacation> &
     IncludePopupProps &
     IncludeDeleteVacation
 }

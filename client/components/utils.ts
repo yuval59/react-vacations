@@ -11,7 +11,9 @@ import {
   VacationCreationParams,
   VacationUpdateParams,
 } from '.'
-import { FETCH_ROUTES, ROLES } from '../constants'
+import { DATE_FORMAT, FETCH_ROUTES, ROLES } from '../constants'
+
+export const formatDate = (date: string) => dayjs(date).format(DATE_FORMAT)
 
 const removeNulls = (params: VacationUpdateParams | VacationCreationParams) => {
   const res = {}

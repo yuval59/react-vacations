@@ -11,8 +11,7 @@ export type {
 } from './buttons'
 export type { AdminCardProps, UserCardProps } from './cards'
 export type { FollowersChartProps } from './charts'
-export type { StatsProps, VacationsComponentProps } from './components'
-export type { NavbarProps } from './navbar'
+export type { NavbarProps, StatsProps } from './components'
 export type { AddPopupProps, DeletePopupProps, EditPopupProps } from './popups'
 export type { FollowersTableProps } from './tables'
 export type {

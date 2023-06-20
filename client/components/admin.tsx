@@ -4,18 +4,22 @@ import { useCookies } from 'react-cookie'
 import {
   AddButton,
   AddPopup,
+  AdminCardComponent,
   AdminVacation,
   NavbarComponent,
   StatsComponent,
-  VacationsComponent,
   addVacationConstructor,
   deleteVacationConstructor,
+  formatDate,
   getVacationsConstructor,
   setVacationConstructor,
+  sortVacations,
 } from '.'
 import { ROLES, ROUTES } from '../constants'
 
 export default () => {
+  const role = ROLES.ADMIN
+
   const router = useRouter()
   const [{ jwt }, setCookie] = useCookies(['jwt'])
   const [vacations, setVacations] = useState<AdminVacation[]>([])
@@ -25,7 +29,7 @@ export default () => {
   const closeTooltip = () => setAddPopup(false)
 
   const getVacations = getVacationsConstructor({
-    role: ROLES.ADMIN,
+    role,
     jwt,
     setVacations,
     onFail: (err: unknown) => {
@@ -53,32 +57,30 @@ export default () => {
     onFail: (err: unknown) => {},
   })
 
-  useEffect(() => {
-    getVacations()
-  }, [])
-
   const logout = () => {
     setCookie('jwt', '')
     router.push(ROUTES.LOGIN)
   }
 
+  const addVacationElement = (
+    <div>
+      <AddButton
+        params={{
+          openTooltip,
+        }}
+      ></AddButton>
+      <AddPopup
+        params={{
+          open: addPopup,
+          closeTooltip,
+          addVacation,
+        }}
+      ></AddPopup>
+    </div>
+  )
+
   const navbarParams = {
-    middleElement: (
-      <div>
-        <AddButton
-          params={{
-            openTooltip,
-          }}
-        ></AddButton>
-        <AddPopup
-          params={{
-            open: addPopup,
-            closeTooltip,
-            addVacation,
-          }}
-        ></AddPopup>
-      </div>
-    ),
+    middleElement: addVacationElement,
     logoutParams: { logout },
   }
 
@@ -86,17 +88,27 @@ export default () => {
     vacations,
   }
 
+  const getCards = () => {
+    return vacations
+      .sort((a, b) => sortVacations({ a, b, role }))
+      .map((vacation: AdminVacation) => (
+        <AdminCardComponent
+          key={vacation.id}
+          params={{ vacation, formatDate, setVacation, deleteVacation }}
+        />
+      ))
+  }
+
+  useEffect(() => {
+    getVacations()
+  }, [])
+
   return (
     <div className="container-fluid overflow-hidden">
       <NavbarComponent params={navbarParams} />
-      <VacationsComponent
-        role={ROLES.ADMIN}
-        params={{
-          vacations,
-          setVacation,
-          deleteVacation,
-        }}
-      />
+
+      <div className="row row-cols-5">{getCards()}</div>
+
       <StatsComponent params={statsParams} />
     </div>
   )

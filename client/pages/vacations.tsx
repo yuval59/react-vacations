@@ -3,13 +3,17 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import {
   NavbarComponent,
+  UserCardComponent,
   Vacation,
-  VacationsComponent,
+  formatDate,
   getVacationsConstructor,
+  sortVacations,
 } from '../components'
 import { ROLES, ROUTES } from '../constants'
 
 export default () => {
+  const role = ROLES.USER
+
   const router = useRouter()
   const [{ jwt }, setCookie] = useCookies(['jwt'])
   const [search, setSearch] = useState('')
@@ -32,37 +36,45 @@ export default () => {
     router.push(ROUTES.LOGIN)
   }
 
+  const searchElement = (
+    <div>
+      <label className="me-2" htmlFor="searchBar">
+        Search
+      </label>
+      <input
+        type="text"
+        id="searchBar"
+        value={search}
+        onChange={({ target: { value } }) => {
+          setSearch(value)
+        }}
+      />
+    </div>
+  )
+
   const navbarParams = {
-    middleElement: (
-      <div>
-        <label className="me-2" htmlFor="searchBar">
-          Search
-        </label>
-        <input
-          type="text"
-          id="searchBar"
-          value={search}
-          onChange={({ target: { value } }) => {
-            setSearch(value)
-          }}
-        />
-      </div>
-    ),
+    middleElement: searchElement,
     logoutParams: { logout },
   }
+
+  const getCards = () =>
+    vacations
+      .filter((vacation) =>
+        vacation.destination.toLowerCase().includes(search.toLowerCase())
+      )
+      .sort((a, b) => sortVacations({ a, b, role }))
+      .map((vacation) => (
+        <UserCardComponent
+          key={vacation.id}
+          params={{ vacation, jwt, getVacations, formatDate }}
+        />
+      ))
 
   return (
     <div className="container-fluid overflow-hidden">
       <NavbarComponent params={navbarParams} />
-      <VacationsComponent
-        role={ROLES.USER}
-        params={{
-          vacations,
-          getVacations,
-          jwt,
-          search,
-        }}
-      />
+
+      <div className="row row-cols-5">{getCards()}</div>
     </div>
   )
 }

@@ -28,7 +28,6 @@ export type {
   VacationCreationParams,
   VacationData,
   VacationUpdateParams,
-  VacationsComponentProps,
 } from './types'
 
 export {
@@ -48,6 +47,7 @@ export {
   SortVacationsForChart,
   addVacationConstructor,
   deleteVacationConstructor,
+  formatDate,
   getVacationsConstructor,
   objectExclude,
   setVacationConstructor,
@@ -59,4 +59,3 @@ export { default as LoginComponent } from './login'
 export { default as NavbarComponent } from './navbar'
 export { default as RegisterComponent } from './register'
 export { default as StatsComponent } from './stats'
-export { default as VacationsComponent, formatDate } from './vacations'
