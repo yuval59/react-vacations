@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { LoginButton, LoginUserInfo } from '.'
 import { ROLES, ROLES_VALUES, ROUTES } from '../constants'
-import { LoginButton, LoginUserInfo } from './'
 
 export default () => {
   const router = useRouter()

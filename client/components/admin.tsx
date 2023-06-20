@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { ROLES, ROUTES } from '../constants'
 import {
   AddButton,
   AddPopup,
@@ -13,7 +12,8 @@ import {
   deleteVacationConstructor,
   getVacationsConstructor,
   setVacationConstructor,
-} from './'
+} from '.'
+import { ROLES, ROUTES } from '../constants'
 
 export default () => {
   const router = useRouter()

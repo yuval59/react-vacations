@@ -1,6 +1,6 @@
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
-import { DeletePopupProps } from '../'
+import { DeletePopupProps } from '..'
 
 export default (props: DeletePopupProps) => {
   const { closeTooltip, open, deleteVacation, vacation } = props.params

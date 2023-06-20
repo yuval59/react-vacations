@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { RegisterButtonProps } from '../'
+import { RegisterButtonProps } from '..'
 import { ERROR_CODES, FETCH_ROUTES } from '../../constants'
 
 export default (props: RegisterButtonProps) => {

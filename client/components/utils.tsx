@@ -1,6 +1,5 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
-import { FETCH_ROUTES, ROLES } from '../constants'
 import {
   AddVacationParams,
   AdminVacation,
@@ -11,7 +10,8 @@ import {
   Vacation,
   VacationCreationParams,
   VacationUpdateParams,
-} from './'
+} from '.'
+import { FETCH_ROUTES, ROLES } from '../constants'
 
 const removeNulls = (params: VacationUpdateParams | VacationCreationParams) => {
   const res = {}

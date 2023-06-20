@@ -1,4 +1,4 @@
-import { LogoutButtonProps } from '../'
+import { LogoutButtonProps } from '..'
 
 export default (props: LogoutButtonProps) => {
   const { logout } = props.params

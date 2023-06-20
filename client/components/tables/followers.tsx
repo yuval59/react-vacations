@@ -1,4 +1,4 @@
-import { FollowersTableProps } from '../'
+import { FollowersTableProps } from '..'
 
 export default (props: FollowersTableProps) => {
   const { data } = props

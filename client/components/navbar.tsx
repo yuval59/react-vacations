@@ -1,4 +1,4 @@
-import { NavbarProps } from './'
+import { NavbarProps } from '.'
 import { LogoutButton } from './buttons'
 
 export default (props: NavbarProps) => {

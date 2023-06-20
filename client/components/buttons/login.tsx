@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { LoginButtonProps } from '../'
+import { LoginButtonProps } from '..'
 import { ERROR_CODES, FETCH_ROUTES, ROLES_VALUES } from '../../constants'
 
 export default (props: LoginButtonProps) => {

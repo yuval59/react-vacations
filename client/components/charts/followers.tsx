@@ -1,5 +1,5 @@
 import { Bar, BarChart, Tooltip, XAxis, YAxis } from 'recharts'
-import { FollowersChartProps } from '../'
+import { FollowersChartProps } from '..'
 
 export default (props: FollowersChartProps) => {
   const { data, setSelected } = props.params

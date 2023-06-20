@@ -5,7 +5,7 @@ import {
   SortVacationsForChart,
   StatsProps,
   VacationData,
-} from './'
+} from '.'
 
 export default (props: StatsProps) => {
   const { vacations } = props.params

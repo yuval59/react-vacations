@@ -5,7 +5,7 @@ import {
   DeletePopup,
   EditButton,
   EditPopup,
-} from '../'
+} from '..'
 
 export default (props: AdminCardProps) => {
   const [edit, setEdit] = useState(false)

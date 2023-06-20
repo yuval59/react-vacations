@@ -1,4 +1,4 @@
-import { FollowButton, UserCardProps } from '../'
+import { FollowButton, UserCardProps } from '..'
 
 export default (props: UserCardProps) => {
   const {
