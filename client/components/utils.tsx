@@ -1,13 +1,15 @@
 import axios from 'axios'
-import { FETCH_ROUTES } from '../constants'
+import dayjs from 'dayjs'
+import { FETCH_ROUTES, ROLES } from '../constants'
 import {
   AddVacationParams,
+  AdminVacation,
   DeleteVacationParams,
   GetVacationsParams,
   SetVacationParams,
+  SortVacationsParams,
   Vacation,
   VacationCreationParams,
-  VacationTypeUnion,
   VacationUpdateParams,
 } from './'
 
@@ -17,22 +19,65 @@ const removeNulls = (params: VacationUpdateParams | VacationCreationParams) => {
   return res
 }
 
+const sortVacations = (params: SortVacationsParams) => {
+  const { a, b, role } = params
+
+  switch (role) {
+    case ROLES.USER: {
+      if (a.following != b.following) return a.following ? -1 : 1
+
+      if (a.start_date != b.start_date)
+        return dayjs(b.start_date).unix() - dayjs(a.start_date).unix()
+
+      if (a.destination < b.destination) return -1
+      if (a.destination > b.destination) return 1
+
+      return 0
+    }
+
+    case ROLES.ADMIN: {
+      if (a.start_date != b.start_date)
+        return dayjs(b.start_date).unix() - dayjs(a.start_date).unix()
+
+      if (a.destination < b.destination) return -1
+      if (a.destination > b.destination) return 1
+
+      return 0
+    }
+  }
+}
+
 export const getVacationsConstructor =
-  <VacationType extends VacationTypeUnion = Vacation>(
-    params: GetVacationsParams<VacationType>
-  ) =>
-  async () => {
-    const { onFail, jwt, setVacations } = params
+  (params: GetVacationsParams) => async () => {
+    const { onFail, jwt, setVacations, role } = params
 
     try {
-      const { data }: { data: VacationType[] } = await axios.get(
-        FETCH_ROUTES.BASE + FETCH_ROUTES.STATS,
-        {
-          headers: { Authorization: jwt },
-        }
-      )
+      switch (role) {
+        case ROLES.USER: {
+          const { data }: { data: Vacation[] } = await axios.get(
+            FETCH_ROUTES.BASE + FETCH_ROUTES.VACATIONS,
+            {
+              headers: { Authorization: jwt },
+            }
+          )
 
-      setVacations(data)
+          setVacations(data.sort((a, b) => sortVacations({ a, b, role })))
+
+          break
+        }
+        case ROLES.ADMIN: {
+          const { data }: { data: AdminVacation[] } = await axios.get(
+            FETCH_ROUTES.BASE + FETCH_ROUTES.STATS,
+            {
+              headers: { Authorization: jwt },
+            }
+          )
+
+          setVacations(data.sort((a, b) => sortVacations({ a, b, role })))
+
+          break
+        }
+      }
     } catch (err: unknown) {
       onFail(err)
     }

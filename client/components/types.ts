@@ -161,11 +161,33 @@ type IncludeSetVacations<VacationType = Vacation> = {
 
 type IncludeOnFail = { onFail: (err: unknown) => void }
 
-export type VacationTypeUnion = Vacation | AdminVacation
+type GetVacationsAsUser = {
+  role: typeof ROLES.USER
+} & IncludeOnFail &
+  IncludeJwt &
+  IncludeSetVacations
 
-export type GetVacationsParams<
-  VacationType extends VacationTypeUnion = Vacation
-> = IncludeOnFail & IncludeJwt & IncludeSetVacations<VacationType>
+type GetVacationsAsAdmin = {
+  role: typeof ROLES.ADMIN
+} & IncludeOnFail &
+  IncludeJwt &
+  IncludeSetVacations<AdminVacation>
+
+export type GetVacationsParams = GetVacationsAsUser | GetVacationsAsAdmin
+
+type SortVacationsAsUser = {
+  role: typeof ROLES.USER
+  a: Vacation
+  b: Vacation
+}
+
+type SortVacationsAsAdmin = {
+  role: typeof ROLES.ADMIN
+  a: AdminVacation
+  b: AdminVacation
+}
+
+export type SortVacationsParams = SortVacationsAsUser | SortVacationsAsAdmin
 
 export type SetVacationParams = IncludeOnFail &
   IncludeJwt &
@@ -186,10 +208,33 @@ export type NavbarProps = {
   }
 }
 
-export type LogoutButtonParams = {
+type LogoutButtonParams = {
   logout: VoidFunction
 }
 
 export type LogoutButtonProps = {
   params: LogoutButtonParams
+}
+
+export type StatsProps = {
+  params: IncludeVacations<AdminVacation>
+}
+
+export type VacationData = {
+  destination: string
+  followers: Follower[]
+  following: number
+}
+
+export type FollowersChartProps = {
+  params: {
+    data: VacationData[]
+    setSelected: (data: VacationData) => void
+  }
+}
+
+export type FollowersTableProps = {
+  data: {
+    followers: Follower[]
+  }
 }

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { ROLES_VALUES, ROUTES } from '../constants'
+import { ROLES, ROLES_VALUES, ROUTES } from '../constants'
 import { LoginButton, LoginUserInfo } from './'
 
 export default () => {
@@ -20,10 +20,10 @@ export default () => {
     setCookie('jwt', jwt)
 
     switch (role) {
-      case 'user':
+      case ROLES.USER:
         return setRoute(ROUTES.VACATIONS)()
 
-      case 'admin':
+      case ROLES.ADMIN:
         return setRoute(ROUTES.ADMIN)()
     }
   }

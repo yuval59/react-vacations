@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { AdminVacation, VacationsComponentProps } from '.'
-import { DATE_FORMAT } from '../constants'
+import { DATE_FORMAT, ROLES } from '../constants'
 import { AdminCardComponent, UserCardComponent } from './cards'
 
 export const formatDate = (date: string) => dayjs(date).format(DATE_FORMAT)
@@ -10,7 +10,7 @@ export default (props: VacationsComponentProps) => {
 
   const getCards = () => {
     switch (role) {
-      case 'user': {
+      case ROLES.USER: {
         const { search, getVacations, jwt, vacations } = props.params
 
         return vacations
@@ -25,7 +25,7 @@ export default (props: VacationsComponentProps) => {
           ))
       }
 
-      case 'admin': {
+      case ROLES.ADMIN: {
         const { setVacation, deleteVacation, vacations } = props.params
 
         return vacations.map((vacation: AdminVacation) => (

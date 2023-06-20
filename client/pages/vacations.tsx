@@ -19,6 +19,7 @@ export default () => {
   }, [])
 
   const getVacations = getVacationsConstructor({
+    role: ROLES.USER,
     jwt,
     setVacations,
     onFail: (err: unknown) => {
@@ -31,24 +32,22 @@ export default () => {
     router.push(ROUTES.LOGIN)
   }
 
-  const searchElement = (
-    <div>
-      <label className="me-2" htmlFor="searchBar">
-        Search
-      </label>
-      <input
-        type="text"
-        id="searchBar"
-        value={search}
-        onChange={({ target: { value } }) => {
-          setSearch(value)
-        }}
-      />
-    </div>
-  )
-
   const navbarParams = {
-    middleElement: searchElement,
+    middleElement: (
+      <div>
+        <label className="me-2" htmlFor="searchBar">
+          Search
+        </label>
+        <input
+          type="text"
+          id="searchBar"
+          value={search}
+          onChange={({ target: { value } }) => {
+            setSearch(value)
+          }}
+        />
+      </div>
+    ),
     logoutParams: { logout },
   }
 

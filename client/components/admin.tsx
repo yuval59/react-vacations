@@ -7,6 +7,7 @@ import {
   AddPopup,
   AdminVacation,
   NavbarComponent,
+  StatsComponent,
   VacationsComponent,
   addVacationConstructor,
   deleteVacationConstructor,
@@ -23,7 +24,8 @@ export default () => {
   const openTooltip = () => setAddPopup(true)
   const closeTooltip = () => setAddPopup(false)
 
-  const getVacations = getVacationsConstructor<AdminVacation>({
+  const getVacations = getVacationsConstructor({
+    role: ROLES.ADMIN,
     jwt,
     setVacations,
     onFail: (err: unknown) => {
@@ -60,26 +62,28 @@ export default () => {
     router.push(ROUTES.LOGIN)
   }
 
-  const addVacationElement = (
-    <div>
-      <AddButton
-        params={{
-          openTooltip,
-        }}
-      ></AddButton>
-      <AddPopup
-        params={{
-          open: addPopup,
-          closeTooltip,
-          addVacation,
-        }}
-      ></AddPopup>
-    </div>
-  )
-
   const navbarParams = {
-    middleElement: addVacationElement,
+    middleElement: (
+      <div>
+        <AddButton
+          params={{
+            openTooltip,
+          }}
+        ></AddButton>
+        <AddPopup
+          params={{
+            open: addPopup,
+            closeTooltip,
+            addVacation,
+          }}
+        ></AddPopup>
+      </div>
+    ),
     logoutParams: { logout },
+  }
+
+  const statsParams = {
+    vacations,
   }
 
   return (
@@ -93,6 +97,7 @@ export default () => {
           deleteVacation,
         }}
       />
+      <StatsComponent params={statsParams} />
     </div>
   )
 }
