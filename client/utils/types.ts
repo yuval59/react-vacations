@@ -1,12 +1,12 @@
-import { AdminVacation, Vacation } from '.'
-import { ROLES } from '../../constants'
+import { AdminVacation, Vacation } from '../components/types'
 import {
   IncludeGetVacations,
   IncludeJwt,
   IncludeOnFail,
   IncludeSetVacations,
   IncludeVacations,
-} from './misc'
+} from '../components/types/misc'
+import { ROLES } from '../constants'
 
 type GetVacationsAsUser = {
   role: typeof ROLES.USER

@@ -1,15 +1,9 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import {
-  NavbarComponent,
-  UserCardComponent,
-  Vacation,
-  formatDate,
-  getVacationsConstructor,
-  sortVacations,
-} from '../components'
+import { NavbarComponent, UserCardComponent, Vacation } from '../components'
 import { ROLES, ROUTES } from '../constants'
+import { formatDate, getVacationsConstructor, sortVacations } from '../utils'
 
 export default () => {
   const role = ROLES.USER

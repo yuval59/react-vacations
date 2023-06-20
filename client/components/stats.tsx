@@ -1,11 +1,6 @@
 import { useState } from 'react'
-import {
-  FollowersChart,
-  FollowersTable,
-  SortVacationsForChart,
-  StatsProps,
-  VacationData,
-} from '.'
+import { FollowersChart, FollowersTable, StatsProps, VacationData } from '.'
+import { SortVacationsForChart } from '../utils'
 
 export default (props: StatsProps) => {
   const { vacations } = props.params

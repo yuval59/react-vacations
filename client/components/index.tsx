@@ -43,19 +43,5 @@ export { FollowersChart } from './charts'
 export { AddPopup, DeletePopup, EditPopup } from './popups'
 export { FollowersTable } from './tables'
 
-export {
-  SortVacationsForChart,
-  addVacationConstructor,
-  deleteVacationConstructor,
-  formatDate,
-  getVacationsConstructor,
-  objectExclude,
-  setVacationConstructor,
-  sortVacations,
-} from './utils'
-
-export { default as AdminComponent } from './admin'
-export { default as LoginComponent } from './login'
 export { default as NavbarComponent } from './navbar'
-export { default as RegisterComponent } from './register'
 export { default as StatsComponent } from './stats'

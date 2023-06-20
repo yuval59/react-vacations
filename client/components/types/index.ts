@@ -1,4 +1,11 @@
 export type {
+  AddVacationParams,
+  DeleteVacationParams,
+  GetVacationsParams,
+  SetVacationParams,
+  SortVacationsParams,
+} from '../../utils/types'
+export type {
   AddButtonProps,
   DeleteButtonProps,
   EditButtonProps,
@@ -11,16 +18,10 @@ export type {
 } from './buttons'
 export type { AdminCardProps, UserCardProps } from './cards'
 export type { FollowersChartProps } from './charts'
-export type { NavbarProps, StatsProps } from './components'
+export type { NavbarProps } from './navbar'
 export type { AddPopupProps, DeletePopupProps, EditPopupProps } from './popups'
+export type { StatsProps } from './stats'
 export type { FollowersTableProps } from './tables'
-export type {
-  AddVacationParams,
-  DeleteVacationParams,
-  GetVacationsParams,
-  SetVacationParams,
-  SortVacationsParams,
-} from './utils'
 export type {
   AdminVacation,
   Follower,

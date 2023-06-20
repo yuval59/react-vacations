@@ -10,7 +10,7 @@ import {
   Vacation,
   VacationCreationParams,
   VacationUpdateParams,
-} from '.'
+} from '../components'
 import { DATE_FORMAT, FETCH_ROUTES, ROLES } from '../constants'
 
 export const formatDate = (date: string) => dayjs(date).format(DATE_FORMAT)

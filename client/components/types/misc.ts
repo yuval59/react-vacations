@@ -1,5 +1,5 @@
 import { Vacation, VacationCreationParams, VacationUpdateParams } from '.'
-import { formatDate } from '..'
+import { formatDate } from '../../utils'
 
 export type IncludeSetMessage = { setMessage: (value: string) => void }
 export type IncludeSearch = { search: string }
