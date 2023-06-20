@@ -1,4 +1,3 @@
-import '@total-typescript/ts-reset'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { ROUTES } from '../constants'

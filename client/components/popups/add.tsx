@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
-import { AddPopupProps, VacationCreationParams } from '../'
+import { AddPopupProps, VacationCreationParams } from '..'
 
 export default (props: AddPopupProps) => {
   const { closeTooltip, open, addVacation } = props.params

@@ -1,4 +1,4 @@
-import { AddButtonProps } from '../'
+import { AddButtonProps } from '..'
 
 export default (props: AddButtonProps) => (
   <button className="btn btn-success" onClick={props.params.openTooltip}>

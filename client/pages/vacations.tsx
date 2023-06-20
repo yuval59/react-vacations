@@ -1,46 +1,33 @@
-import axios from 'axios'
-import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import NavbarComponent from '../components/navbar'
-import { Vacation, VacationsComponent } from '../components/vacations'
-import { FETCH_ROUTES, ROLES, ROUTES } from '../constants'
+import { NavbarComponent, UserCardComponent, Vacation } from '../components'
+import { ROLES, ROUTES } from '../constants'
+import { formatDate, getVacationsConstructor, sortVacations } from '../utils'
 
 export default () => {
+  const role = ROLES.USER
+
   const router = useRouter()
-  const [cookies, setCookie] = useCookies(['jwt'])
+  const [{ jwt }, setCookie] = useCookies(['jwt'])
   const [search, setSearch] = useState('')
   const [vacations, setVacations] = useState<Vacation[]>([])
-
   useEffect(() => {
     getVacations()
   }, [])
 
-  const getVacations = async () => {
-    try {
-      const { data }: { data: Vacation[] } = await axios.get(
-        FETCH_ROUTES.BASE + FETCH_ROUTES.VACATIONS,
-        {
-          headers: { Authorization: cookies.jwt },
-        }
-      )
-
-      setVacations(
-        data.sort((a, b) => {
-          if (a.following != b.following) return a.following ? -1 : 1
-
-          if (a.start_date != b.start_date)
-            return dayjs(b.start_date).unix() - dayjs(a.start_date).unix()
-
-          if (a.destination < b.destination) return -1
-          if (a.destination > b.destination) return 1
-          return 0
-        })
-      )
-    } catch {
+  const getVacations = getVacationsConstructor({
+    role: ROLES.USER,
+    jwt,
+    setVacations,
+    onFail: (err: unknown) => {
       router.push(ROUTES.LOGIN)
-    }
+    },
+  })
+
+  const logout = () => {
+    setCookie('jwt', '')
+    router.push(ROUTES.LOGIN)
   }
 
   const searchElement = (
@@ -59,18 +46,29 @@ export default () => {
     </div>
   )
 
+  const navbarParams = {
+    middleElement: searchElement,
+    logoutParams: { logout },
+  }
+
+  const getCards = () =>
+    vacations
+      .filter((vacation) =>
+        vacation.destination.toLowerCase().includes(search.toLowerCase())
+      )
+      .sort((a, b) => sortVacations({ a, b, role }))
+      .map((vacation) => (
+        <UserCardComponent
+          key={vacation.id}
+          params={{ vacation, jwt, getVacations, formatDate }}
+        />
+      ))
+
   return (
     <div className="container-fluid overflow-hidden">
-      <NavbarComponent middleElement={searchElement} />
-      <VacationsComponent
-        role={ROLES.USER}
-        params={{
-          vacations,
-          getVacations,
-          jwt: cookies.jwt,
-          search,
-        }}
-      />
+      <NavbarComponent params={navbarParams} />
+
+      <div className="row row-cols-5">{getCards()}</div>
     </div>
   )
 }

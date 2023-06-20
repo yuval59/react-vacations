@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { FollowButtonProps } from '../'
-import { FETCH_ROUTES } from '../../../constants'
+import { FollowButtonProps } from '..'
+import { FETCH_ROUTES } from '../../constants'
 
 export default (props: FollowButtonProps) => {
   const { following, vacationId, jwt, getVacations } = props

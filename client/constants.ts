@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 export const FETCH_ROUTES = {
   BASE: process.env.SERVER,
   VACATIONS: '/vacations',
@@ -15,6 +13,9 @@ export const ROUTES = {
   REGISTER: '/register',
   ADMIN: '/admin',
 } as const
+
+export type ROUTES_KEYS = keyof typeof ROUTES
+export type ROUTES_VALUES = (typeof ROUTES)[ROUTES_KEYS]
 
 export const DATE_FORMAT = 'DD/MM/YYYY'
 
