@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { AdminVacation, VacationsComponentProps } from '.'
+import { AdminVacation, VacationsComponentProps, sortVacations } from '.'
 import { DATE_FORMAT, ROLES } from '../constants'
 import { AdminCardComponent, UserCardComponent } from './cards'
 
@@ -17,6 +17,7 @@ export default (props: VacationsComponentProps) => {
           .filter((vacation) =>
             vacation.destination.toLowerCase().includes(search.toLowerCase())
           )
+          .sort((a, b) => sortVacations({ a, b, role }))
           .map((vacation) => (
             <UserCardComponent
               key={vacation.id}
@@ -28,12 +29,14 @@ export default (props: VacationsComponentProps) => {
       case ROLES.ADMIN: {
         const { setVacation, deleteVacation, vacations } = props.params
 
-        return vacations.map((vacation: AdminVacation) => (
-          <AdminCardComponent
-            key={vacation.id}
-            params={{ vacation, formatDate, setVacation, deleteVacation }}
-          />
-        ))
+        return vacations
+          .sort((a, b) => sortVacations({ a, b, role }))
+          .map((vacation: AdminVacation) => (
+            <AdminCardComponent
+              key={vacation.id}
+              params={{ vacation, formatDate, setVacation, deleteVacation }}
+            />
+          ))
       }
     }
   }

@@ -1,5 +1,11 @@
 import { useState } from 'react'
-import { FollowersChart, FollowersTable, StatsProps, VacationData } from './'
+import {
+  FollowersChart,
+  FollowersTable,
+  SortVacationsForChart,
+  StatsProps,
+  VacationData,
+} from './'
 
 export default (props: StatsProps) => {
   const { vacations } = props.params
@@ -10,12 +16,14 @@ export default (props: StatsProps) => {
     followers: [],
   })
 
-  const chartData = vacations.map(({ destination, followers, id }) => ({
-    id,
-    destination,
-    followers,
-    following: followers.length,
-  }))
+  const chartData = vacations
+    .sort(SortVacationsForChart)
+    .map(({ destination, followers, id }) => ({
+      id,
+      destination,
+      followers,
+      following: followers.length,
+    }))
 
   const chartParams = {
     data: chartData,

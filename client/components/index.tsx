@@ -48,11 +48,13 @@ export { AddPopup, DeletePopup, EditPopup } from './popups'
 export { FollowersTable } from './tables'
 
 export {
+  SortVacationsForChart,
   addVacationConstructor,
   deleteVacationConstructor,
   getVacationsConstructor,
   objectExclude,
   setVacationConstructor,
+  sortVacations,
 } from './utils'
 
 export { default as AdminComponent } from './admin'

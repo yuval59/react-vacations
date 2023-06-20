@@ -19,7 +19,11 @@ const removeNulls = (params: VacationUpdateParams | VacationCreationParams) => {
   return res
 }
 
-const sortVacations = (params: SortVacationsParams) => {
+export const SortVacationsForChart = (a: AdminVacation, b: AdminVacation) => {
+  return a.destination.localeCompare(b.destination)
+}
+
+export const sortVacations = (params: SortVacationsParams) => {
   const { a, b, role } = params
 
   switch (role) {
@@ -29,20 +33,14 @@ const sortVacations = (params: SortVacationsParams) => {
       if (a.start_date != b.start_date)
         return dayjs(b.start_date).unix() - dayjs(a.start_date).unix()
 
-      if (a.destination < b.destination) return -1
-      if (a.destination > b.destination) return 1
-
-      return 0
+      return a.destination.localeCompare(b.destination)
     }
 
     case ROLES.ADMIN: {
       if (a.start_date != b.start_date)
         return dayjs(b.start_date).unix() - dayjs(a.start_date).unix()
 
-      if (a.destination < b.destination) return -1
-      if (a.destination > b.destination) return 1
-
-      return 0
+      return a.destination.localeCompare(b.destination)
     }
   }
 }
@@ -61,7 +59,7 @@ export const getVacationsConstructor =
             }
           )
 
-          setVacations(data.sort((a, b) => sortVacations({ a, b, role })))
+          setVacations(data)
 
           break
         }
@@ -73,7 +71,7 @@ export const getVacationsConstructor =
             }
           )
 
-          setVacations(data.sort((a, b) => sortVacations({ a, b, role })))
+          setVacations(data)
 
           break
         }
